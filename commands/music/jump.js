@@ -2,18 +2,18 @@ const { ApplicationCommandOptionType } = require('discord.js');
 
 module.exports = {
     name: 'jump',
-    description: "Jumps to particular track in queue",
+    description: "Jumps to a track in the queue.",
     voiceChannel: true,
     options: [
         {
             name: 'song',
-            description: 'the name/url of the track you want to jump to',
+            description: 'The name or URL of the track you want to jump to.',
             type: ApplicationCommandOptionType.String,
             required: false,
         },
         {
             name: 'number',
-            description: 'the place in the queue the song is in',
+            description: 'The place in the queue the track is in.',
             type: ApplicationCommandOptionType.Number,
             required: false,
         }
@@ -25,24 +25,24 @@ module.exports = {
 
         const queue = player.getQueue(inter.guildId);
 
-        if (!queue || !queue.playing) return inter.reply({ content: `No music currently playing ${inter.member}... try again ? ❌`, ephemeral: true });
-        if (!track && !number) inter.reply({ content: `You have to use one of the options to jump to a song ${inter.member}... try again ? ❌`, ephemeral: true });
+        if (!queue || !queue.playing) return inter.reply({ content: `Nothing is currently playing.`, ephemeral: true });
+        if (!track && !number) inter.reply({ content: `No option was filled out.`, ephemeral: true });
 
             if (track) {
         for (let song of queue.tracks) {
             if (song.title === track || song.url === track ) {
                 queue.skipTo(song)
-                return inter.reply({ content: `skiped to ${track} ✅` });
+                return inter.reply({ content: `Skipped to *${track}*.` });
             }
         }
-        return inter.reply({ content: `could not find ${track} ${inter.member}... try using the url or the full name of the song ? ❌`, ephemeral: true });    
+        return inter.reply({ content: `Couldn't find *${track}* in the queue.`, ephemeral: true });    
     }
     if (number) {
         const index = number - 1
         const trackname = queue.tracks[index].title
-        if (!trackname) return inter.reply({ content: `This track dose not seem to exist ${inter.member}...  try again ?❌`, ephemeral: true });   
+        if (!trackname) return inter.reply({ content: `Couldn't find your requested track in the queue.`, ephemeral: true });   
         queue.skipTo(index);
-        return inter.reply({ content: `Jumped to ${trackname}  ✅` });
+        return inter.reply({ content: `Skipped to *${track}*.` });
     }
          
     }

@@ -1,7 +1,11 @@
 module.exports = async ({  inter, queue }) => { 
-    if (!queue || !queue.playing) return inter.reply({ content: `No music currently playing... try again ? ❌`, ephemeral: true });
+    if (!queue || !queue.playing) return inter.reply({ content: `Nothing is currently playing.`, ephemeral: true });
     
     const success = queue.skip();
 
-    return inter.reply({ content: success ? `Current music ${queue.current.title} skipped ✅` : `Something went wrong ${inter.member}... try again ? ❌`, ephemeral: true});
+    if (success) {
+        return inter.reply({ content: `Skipped *${queue.current.title}*.` });
+    } else {
+        return inter.reply({ content: `Something went wrong.`, ephemeral: true  });
+    }
 }

@@ -1,14 +1,8 @@
-# Music-bot
+# discord-music-bot
 
-A complete code to download for a music bot 🎧
+Forked from https://github.com/ZerioDev/Music-bot and made better.
 
-Looking for a code for a music bot ? This fully open source code is made for your project !
-
-If you need help with this project, to get support faster you can join the help server by just clicking [here](https://discord.gg/5cGSYV8ZZj).
-
-*If you don't have any development knowledge, it is recommended to join the Discord support server to get help.*
-
-### ⚡ Configuration
+### Configuration
 
 Open the configuration file located in the main folder `config.js`.
 
@@ -16,7 +10,7 @@ Open the configuration file located in the main folder `config.js`.
 module.exports = {
     app: {
         token: 'XXX',
-        playing: 'by Zerio ❤️',
+        playing: '',
         global: true,
         guild: 'xxx'
     },
@@ -59,32 +53,10 @@ Advanced configuration
 - `opt/defaultvolume`, is the defaul volume the queue will start at
 - `opt/discordPlayer`, options used by discord-player
 
-### 📑 Installation
+### Installation
 
 To use the project correctly you will need some tools.
 
-[FFmpeg](https://www.ffmpeg.org) to process audio
+[FFmpeg](https://www.ffmpeg.org) to process audio.
 
-[Node JS](https://nodejs.org/en/) (v16.6) for environment
-
-Without forgetting of course the code editor ^^
-
-Realized with ❤️ by [ZerioDev](https://github.com/ZerioDev).
-
-Please do not withdraw the license and keep the credits on this project.
-
-To have full access to the project and to be able to withdraw the credits a small donation is accepted. 
-
-### 📝 ToDo 
-
-- [ ] lyrics command
-
--  [ ] Vote to skip command https://github.com/ZerioDev/Music-bot/issues/187
-
-- [ ] history commnad
-
-- [ ] auto autocomplete (play, search, filters, ect)
-
-- [ ] better button option's
-
-- [ ] more config's for discord player 
+[NodeJS](https://nodejs.org/en/) (v16.6) for environment.

@@ -1,25 +1,57 @@
 const { EmbedBuilder } = require('discord.js');
 module.exports = async ({ client, inter, queue }) => { 
-    if (!queue || !queue.playing) return inter.reply({ content: `No music currently playing... try again ? ❌`, ephemeral: true });
+    if (!queue) return inter.reply({ content: `Nothing is currently playing.`, ephemeral: true });
 
-    const track = queue.current;
+        const track = queue.current;
 
-    const methods = ['disabled', 'track', 'queue'];
+        const methods = ['Disabled', 'Track', 'Queue'];
 
-    const timestamp = queue.getPlayerTimestamp();
+        const timestamp = queue.getPlayerTimestamp();
 
-    const trackDuration = timestamp.progress == 'Infinity' ? 'infinity (live)' : track.duration;
+        const trackDuration = timestamp.progress == 'Infinity' ? 'Live 🔴' : track.duration;
 
-    const progress = queue.createProgressBar();
-    
+        const progress = queue.createProgressBar();
+        
 
-    const embed = new EmbedBuilder()
-    .setAuthor({ name: track.title,  iconURL: client.user.displayAvatarURL({ size: 1024, dynamic: true })})
-    .setThumbnail(track.thumbnail)
-    .setDescription(`Volume **${queue.volume}**%\nDuration **${trackDuration}**\nProgress ${progress}\nLoop mode **${methods[queue.repeatMode]}**\nRequested by ${track.requestedBy}`)
-    .setFooter({ text: 'Music comes first - Made with heart by Zerio ❤️', iconURL: inter.member.avatarURL({ dynamic: true })})
-    .setColor('ff0000')
-    .setTimestamp()
+        const embed = new EmbedBuilder()
+        .setTitle(track.title)
+        .setThumbnail(track.thumbnail)
+        .setURL(track.url)
+        .setDescription(`${progress}`)
+        .setFields(
+            { name: 'Requested by', value: track.requestedBy.toString(), inline: true },
+            { name: 'Loop', value: methods[queue.repeatMode], inline: true }
+        )
+        .setColor('#ff9900');
 
-    inter.reply({ embeds: [embed], ephemeral: true });
+        const back = new ButtonBuilder()
+            .setLabel('⏮ Back')
+            .setCustomId(JSON.stringify({ffb: 'back'}))
+            .setStyle('Primary')
+
+            const skip = new ButtonBuilder()
+            .setLabel('Next ⏭')
+            .setCustomId(JSON.stringify({ffb: 'skip'}))
+            .setStyle('Primary')
+
+            const resumepause = new ButtonBuilder()
+            .setLabel('Play/Pause')
+            .setCustomId(JSON.stringify({ffb: 'resume&pause'}))
+            .setStyle('Success')
+
+            const loop = new ButtonBuilder()
+            .setLabel('Loop')
+            .setCustomId(JSON.stringify({ffb: 'loop'}))
+            .setStyle('Secondary')
+            
+            const queuebutton = new ButtonBuilder()
+            .setLabel('Queue')
+            .setCustomId(JSON.stringify({ffb: 'queue'}))
+            .setStyle('Secondary')
+
+
+
+        const row = new ActionRowBuilder().addComponents(back, queuebutton, resumepause, loop, skip);
+
+         inter.reply({ embeds: [embed], components: [row] });
 }

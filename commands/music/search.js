@@ -3,12 +3,12 @@ const { QueryType } = require('discord-player');
 
 module.exports = {
     name: 'search',
-    description: 'search a track',
+    description: 'Search a track',
     voiceChannel: true,
     options: [
         {
             name: 'song',
-            description: 'the song you want to search',
+            description: 'What search query?',
             type: ApplicationCommandOptionType.String,
             required: true,
         }
@@ -22,7 +22,7 @@ module.exports = {
             searchEngine: QueryType.AUTO
         });
 
-        if (!res || !res.tracks.length) return inter.reply({ content: `No results found ${inter.member}... try again ? ❌`, ephemeral: true });
+        if (!res || !res.tracks.length) return inter.reply({ content: `Nothing found for that search.`, ephemeral: true });
 
         const queue = await player.createQueue(inter.guild, {
             metadata: inter.channel,
@@ -31,11 +31,11 @@ module.exports = {
         const maxTracks = res.tracks.slice(0, 10);
 
         const embed = new EmbedBuilder()
-        .setColor('#ff0000')
-        .setAuthor({ name: `Results for ${song}`, iconURL: client.user.displayAvatarURL({ size: 1024, dynamic: true })})
-        .setDescription(`${maxTracks.map((track, i) => `**${i + 1}**. ${track.title} | ${track.author}`).join('\n')}\n\nSelect choice between **1** and **${maxTracks.length}** or **cancel** ⬇️`)
+        .setColor('#ff9900')
+        .setTitle(`Results for ${song}`)
+        .setDescription(`${maxTracks.map((track, i) => `**${i + 1}** - ${track.title} | ${track.author}`).join('\n')}\n\nSend a message between **1** and **${maxTracks.length}** or **cancel** within 15 seconds.`)
         .setTimestamp()
-        .setFooter({ text: 'Music comes first - Made with heart by Zerio ❤️', iconURL: inter.member.avatarURL({ dynamic: true })})
+        
 
         inter.reply({ embeds: [embed] });
 
@@ -47,10 +47,10 @@ module.exports = {
         });
 
         collector.on('collect', async (query) => {
-            if (query.content.toLowerCase() === 'cancel') return inter.followUp({ content: `Search cancelled ✅`, ephemeral: true }), collector.stop();
+            if (query.content.toLowerCase() === 'cancel') return inter.followUp({ content: `Search cancelled.`, ephemeral: true }), collector.stop();
 
             const value = parseInt(query);
-            if (!value || value <= 0 || value > maxTracks.length) return inter.followUp({ content: `Invalid response, try a value between **1** and **${maxTracks.length}** or **cancel**... try again ? ❌`, ephemeral: true });
+            if (!value || value <= 0 || value > maxTracks.length) return inter.followUp({ content: `Send a message between **1** and **${maxTracks.length}** or **cancel**.`, ephemeral: true });
 
             collector.stop();
 
@@ -58,10 +58,10 @@ module.exports = {
                 if (!queue.connection) await queue.connect(inter.member.voice.channel);
             } catch {
                 await player.deleteQueue(inter.guildId);
-                return inter.followUp({ content: `I can't join the voice channel ${inter.member}... try again ? ❌`, ephemeral: true });
+                return inter.followUp({ content: `Can't join the voice channel.`, ephemeral: true });
             }
 
-            await inter.followUp(`Loading your search... 🎧`);
+            await inter.followUp(`Queued *${res.tracks[0].title}*.`);
 
             queue.addTrack(res.tracks[query.content - 1]);
 
@@ -69,7 +69,7 @@ module.exports = {
         });
 
         collector.on('end', (msg, reason) => {
-            if (reason === 'time') return inter.followUp({ content:`Search timed out ${inter.member}... try again ? ❌`, ephemeral: true })
+            if (reason === 'time') return inter.followUp({ content:`Search timed out.`, ephemeral: true })
         });
     },
 };
