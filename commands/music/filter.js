@@ -40,6 +40,6 @@ module.exports = {
 
         await queue.setFilters(filtersUpdated);
 
-        inter.reply({ content: `\`${filter}\` filter is now **${queue.getFiltersEnabled().includes(filter) ? 'enabled' : 'disabled'}. World's funniest joke!` });
+        inter.reply({ content: `\`${filter}\` filter is now ${queue.getFiltersEnabled().includes(filter) ? 'enabled' : 'disabled'}. World's funniest joke!` });
     },
 };
