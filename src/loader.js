@@ -6,7 +6,7 @@ CommandsArray = [];
 
 
 
-const events = readdirSync('./events/').filter(file => file.endsWith('.js'));
+const events = readdirSync(`${__dirname}/../events/`).filter(file => file.endsWith('.js'));
 
 console.log(`Loading events...`);
 
@@ -19,8 +19,8 @@ for (const file of events) {
 
 console.log(`Loading commands...`);
 
-readdirSync('./commands/').forEach(dirs => {
-    const commands = readdirSync(`./commands/${dirs}`).filter(files => files.endsWith('.js'));
+readdirSync(`${__dirname}/../commands/`).forEach(dirs => {
+    const commands = readdirSync(`${__dirname}/../commands/${dirs}`).filter(files => files.endsWith('.js'));
 
     for (const file of commands) {
         const command = require(`../commands/${dirs}/${file}`);
