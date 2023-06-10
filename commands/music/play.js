@@ -13,33 +13,23 @@ module.exports = {
         }
     ],
 
-    async execute({ inter }) {
-        const song = inter.options.getString('song');
-        const res = await player.search(song, {
-            requestedBy: inter.member,
-            searchEngine: QueryType.AUTO
-        });
-
-        if (!res || !res.tracks.length) return inter.reply({ content: `Nothing found for that search.`, ephemeral: true });
-
-        const queue = await player.createQueue(inter.guild, {
-            metadata: inter.channel,
-            spotifyBridge: client.config.opt.spotifyBridge,
-            initialVolume: client.config.opt.defaultvolume,
-            leaveOnEnd: client.config.opt.leaveOnEnd
-        });
-
+    async execute({inter}) {
+        const channel = inter.channel;
+        if (!channel) return inter.reply('You are not connected to a voice channel!');
+        const query = inter.options.getString('song', true);
+    
+        await inter.deferReply();
+    
         try {
-            if (!queue.connection) await queue.connect(inter.member.voice.channel);
-        } catch {
-            await player.deleteQueue(inter.guildId);
-            return inter.reply({ content: `Can't join the voice channel.`, ephemeral: true});
+            const { track } = await player.play(channel, query, {
+                nodeOptions: {
+                    metadata: inter // we can access this metadata object using queue.metadata later on
+                }
+            });
+    
+            return inter.followUp(`**${track.title}** enqueued!`);
+        } catch (e) {
+            return inter.followUp(`Something went wrong: ${e}`);
         }
-
-        await inter.reply({ content:`Queued ${res.playlist ? 'playlist' : `*${res.tracks[0].title}*`}.`});
-
-        res.playlist ? queue.addTracks(res.tracks) : queue.addTrack(res.tracks[0]);
-
-        if (!queue.playing) await queue.play();
     },
 };

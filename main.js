@@ -15,6 +15,7 @@ global.client = new Client({
 client.config = require('./config');
 
 global.player = new Player(client, client.config.opt.discordPlayer);
+global.player.extractors.loadDefault()
 
 require('./src/loader');
 require('./src/events');
