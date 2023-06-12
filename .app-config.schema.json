@@ -1,0 +1,134 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema",
+    "$ref": "#/definitions/Config",
+    "definitions": {
+        "Config": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "app": {
+                    "$ref": "#/definitions/App"
+                },
+                "opt": {
+                    "$ref": "#/definitions/Opt"
+                }
+            },
+            "required": ["app", "opt"],
+            "title": "Config"
+        },
+        "App": {
+            "type": "object",
+            "properties": {
+                "token": {
+                    "type": "string"
+                },
+                "playing": {
+                    "type": "string"
+                }
+            },
+            "oneOf": [
+                {
+                    "type": "object",
+                    "properties": {
+                        "global": { "enum": [false] },
+                        "guild": {
+                            "type": "string"
+                        }
+                    },
+                    "required": ["global", "guild"]
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "global": { "enum": [true] }
+                    },
+                    "required": ["global"]
+                }
+            ],
+            "required": ["token", "playing"],
+            "title": "App"
+        },
+        "Opt": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "DJ": {
+                    "$ref": "#/definitions/Dj"
+                },
+                "maxVol": {
+                    "type": "integer"
+                },
+                "leaveOnEnd": {
+                    "type": "boolean"
+                },
+                "loopMessage": {
+                    "type": "boolean"
+                },
+                "spotifyBridge": {
+                    "type": "boolean"
+                },
+                "defaultvolume": {
+                    "type": "integer"
+                },
+                "discordPlayer": {
+                    "$ref": "#/definitions/DiscordPlayer"
+                }
+            },
+            "required": [
+                "DJ",
+                "defaultvolume",
+                "discordPlayer",
+                "leaveOnEnd",
+                "loopMessage",
+                "maxVol",
+                "spotifyBridge"
+            ],
+            "title": "Opt"
+        },
+        "Dj": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "enabled": {
+                    "type": "boolean"
+                },
+                "roleName": {
+                    "type": "string"
+                },
+                "commands": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            },
+            "required": ["commands", "enabled", "roleName"],
+            "title": "Dj"
+        },
+        "DiscordPlayer": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "ytdlOptions": {
+                    "$ref": "#/definitions/YtdlOptions"
+                }
+            },
+            "required": ["ytdlOptions"],
+            "title": "DiscordPlayer"
+        },
+        "YtdlOptions": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "quality": {
+                    "type": "string"
+                },
+                "highWaterMark": {
+                    "type": "integer"
+                }
+            },
+            "required": ["highWaterMark", "quality"],
+            "title": "YtdlOptions"
+        }
+    }
+}
