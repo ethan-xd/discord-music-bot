@@ -7,21 +7,24 @@ import {
     InteractionResponse,
     Message,
     MessageComponentInteraction,
+    VoiceBasedChannel,
 } from 'discord.js'
 
-export interface Command {
+export type Command<VoiceChannel extends boolean = boolean> = {
     name: string
     description: string
-    voiceChannel?: boolean
     showHelp?: boolean
     options?: ApplicationCommandOption[]
     execute: (args: {
         client: Client
-        inter: CommandInteraction<'cached'>
+        inter: CommandInteraction<'cached'> &
+            (VoiceChannel extends true
+                ? { member: { voice: { channel: VoiceBasedChannel } } }
+                : unknown)
         player: Player
         commands: Collection<string, Command>
     }) => Promise<InteractionResponse | Message<true> | void>
-}
+} & (VoiceChannel extends true ? { voiceChannel: true } : { voiceChannel?: false })
 
 export interface CustomId {
     ffb: string

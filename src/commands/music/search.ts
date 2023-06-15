@@ -74,7 +74,7 @@ export default {
             collector.stop()
 
             try {
-                if (!queue.connection) await queue.connect(throwIfNull(inter.member.voice.channel))
+                if (!queue.connection) await queue.connect(inter.member.voice.channel)
             } catch {
                 player.queues.delete(inter.guildId)
                 await inter.followUp({ content: "Can't join the voice channel.", ephemeral: true })
@@ -99,4 +99,4 @@ export default {
         })
         return
     },
-} satisfies Command
+} satisfies Command<true>
