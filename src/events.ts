@@ -1,24 +1,15 @@
 import { buildButtons } from './utils'
 import { config } from '@app-config/main'
 import { GuildQueue, GuildQueueEvents, Player, PlayerEventsEmitter } from 'discord-player'
-import {
-    ChatInputCommandInteraction,
-    EmbedBuilder,
-    PartialTextBasedChannelFields,
-} from 'discord.js'
-import { throwIfNull } from 'throw-expression'
+import { EmbedBuilder, PartialTextBasedChannelFields, TextChannel } from 'discord.js'
 
 type Send = PartialTextBasedChannelFields['send']
 
-const send = (
-    queue: GuildQueue<ChatInputCommandInteraction>,
-    ...args: Parameters<Send>
-): ReturnType<Send> => throwIfNull(queue.metadata.channel, 'metadata.channel is null').send(...args)
+const send = (queue: GuildQueue<TextChannel>, ...args: Parameters<Send>): ReturnType<Send> =>
+    queue.metadata.send(...args)
 
 export const createEvents = (player: Player) => {
-    const events = player.events as PlayerEventsEmitter<
-        GuildQueueEvents<ChatInputCommandInteraction>
-    >
+    const events = player.events as PlayerEventsEmitter<GuildQueueEvents<TextChannel>>
     events.on('error', (_queue, error) => {
         console.log(JSON.stringify(error))
     })
