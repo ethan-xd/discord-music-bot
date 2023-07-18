@@ -1,0 +1,38 @@
+// base tsconfig file, also used for typechecking top level config files
+// ./src/tsconfig.json extends this
+{
+    "compilerOptions": {
+        "target": "es2021",
+        "module": "commonjs",
+        "lib": ["es2021"],
+        "allowJs": true,
+        "checkJs": true,
+        "declaration": true,
+        "declarationMap": true,
+        "sourceMap": true,
+        "noEmit": true,
+        "isolatedModules": true,
+        "strict": true,
+        "noImplicitAny": true,
+        "strictNullChecks": true,
+        "strictFunctionTypes": true,
+        "strictBindCallApply": true,
+        "strictPropertyInitialization": true,
+        "noImplicitThis": true,
+        "alwaysStrict": true,
+        "noImplicitReturns": true,
+        "noFallthroughCasesInSwitch": true,
+        "noUncheckedIndexedAccess": true,
+        "types": ["@types/node"],
+        "esModuleInterop": true,
+        "skipLibCheck": false,
+        "forceConsistentCasingInFileNames": true,
+        "noPropertyAccessFromIndexSignature": true,
+        "noImplicitOverride": true,
+        "exactOptionalPropertyTypes": true,
+        "allowUnreachableCode": false,
+        "resolveJsonModule": true
+    },
+    "include": ["*.ts", "*.js", ".*.ts", ".*.js", "src/config.js"],
+    "exclude": ["src", "tests"]
+}

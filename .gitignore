@@ -1,3 +1,6 @@
 node_modules/
-package-lock.json
-config.js
+dist/
+src/config.ts
+.app-config.secrets.yml
+.app-config.secrets.yaml
+.app-config.secrets.json
